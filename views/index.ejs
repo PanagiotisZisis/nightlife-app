@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>nightlifeApp | Home</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/style.css">
+
+  </head>
+
+  <body>
+
+    <div class="container mt-5">
+      <h1 class="text-white display-3 text-center">nightlifeApp</h1>
+      <p class="text-white text-center lead">Find fun near you!</p>
+      <form method="POST" action="/" class="mt-5">
+        <div class="input-group offset-sm-2 col-md-8">
+          <input id="location" name="location" type="text" class="form-control" placeholder="e.g. Boston"
+          <% if (location) { %>
+            value="<%= location %>"
+          <% } %>
+          >
+          <span class="input-group-btn">
+            <button class="btn btn-outline-success" type="submit">Search!</button>
+          </span>
+        </div>
+      </form>
+      <br />
+
+      <% if (bars) { %>
+        <% for (let i = 0; i < 5; i++) { %>
+          <div class="row">
+
+            <div class="col-md-3">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="<%= bars[i * 4].image_url %>" alt="Card image cap">
+                <div class="card-block">
+                  <h4 class="card-title"><%= bars[i * 4].name %></h4>
+                  <button class="btn btn-primary goingButton" data-id="<%= bars[i * 4].id %>">0 Going</button>
+                </div>
+              </div>
+              <br />
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="<%= bars[i * 4 + 1].image_url %>" alt="Card image cap">
+                <div class="card-block">
+                  <h4 class="card-title"><%= bars[i * 4 + 1].name %></h4>
+                  <button class="btn btn-primary goingButton" data-id="<%= bars[i * 4 + 1].id %>">0 Going</button>
+                </div>
+              </div>
+              <br />
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="<%= bars[i * 4 + 2].image_url %>" alt="Card image cap">
+                <div class="card-block">
+                  <h4 class="card-title"><%= bars[i * 4 + 2].name %></h4>
+                  <button class="btn btn-primary goingButton" data-id="<%= bars[i * 4 + 2].id %>">0 Going</button>
+                </div>
+              </div>
+              <br />
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <img class="card-img-top img-fluid" src="<%= bars[i * 4 + 3].image_url %>" alt="Card image cap">
+                <div class="card-block">
+                  <h4 class="card-title"><%= bars[i * 4 + 3].name %></h4>
+                  <button class="btn btn-primary goingButton" data-id="<%= bars[i * 4 + 3].id %>">0 Going</button>
+                </div>
+              </div>
+              <br />
+            </div>
+
+          </div>
+        <% } %>
+      <% } %>
+    </div>
+
+    <footer class="footer bg-inverse">
+      <div class="container d-flex">
+        <span class="text-muted">Powered by Yelp.</span>
+        <span class="text-muted ml-auto">© 2017 Panagiotis Zisis</span>
+      </div>
+    </footer>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
