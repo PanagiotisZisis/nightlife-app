@@ -1,5 +1,6 @@
 body {
-  background-color: #333;
+  background: linear-gradient(-45deg, rgb(34, 94, 158) 0%, rgb(113, 44, 105) 100%);
+  //background-color: #333;
 }
 
 html {
@@ -21,6 +22,7 @@ body {
 
 #location {
   background-color: #333;
+  opacity: 0.8;
   color: white;
 }
 
