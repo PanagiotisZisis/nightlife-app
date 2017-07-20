@@ -12,13 +12,20 @@
 
   </head>
 
-  <body>
+  <body data-username="<%= user.username %>">
 
     <div class="container mt-5">
       <h1 class="text-white display-3 text-center">nightlifeApp <i class="fa fa-glass" aria-hidden="true"></i></h1>
       <p class="text-white text-center lead">Find fun near you!</p>
+      <% if (error) { %>
+        <div id="errorContainer" class="offset-md-4 col-md-4">
+          <div class="alert alert-danger text-center" role="alert">
+            <%= error %>
+          </div>
+        </div>
+      <% } %>
       <form method="POST" action="/" class="mt-5">
-        <div class="input-group offset-sm-2 col-md-8">
+        <div class="input-group offset-md-2 col-md-8">
           <input id="location" name="location" type="text" class="form-control" placeholder="e.g. Boston"
           <% if (location) { %>
             value="<%= location %>"
@@ -106,6 +113,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/index.js"></script>
 
   </body>
 </html>

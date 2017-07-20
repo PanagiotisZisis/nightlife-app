@@ -5,7 +5,10 @@ const router = express.Router();
 const yelp = require('yelp-fusion');
 
 router.get('/', (req, res) => {
-  res.render('index', { location: false, bars: false });
+  if (req.user) {
+    return res.render('index', { location: false, bars: false , user: req.user, error: false });
+  }
+  res.render('index', { location: false, bars: false , user: false, error: false });
 });
 
 router.post('/', (req, res) => {
@@ -19,10 +22,16 @@ router.post('/', (req, res) => {
       categories: 'bars',
       location: location
     }).then(response => {
-      res.render('index', { location: location, bars: response.jsonBody.businesses });
+      if (req.user) {
+        return res.render('index', { location: location, bars: response.jsonBody.businesses, user: req.user, error: false });
+      }
+      res.render('index', { location: location, bars: response.jsonBody.businesses, user: false, error: false });
+    }).catch(() => {
+      if (req.user) {
+        return res.render('index', { location: false, bars: false , user: req.user, error: 'Invalid Search Term' });
+      }
+      res.render('index', { location: false, bars: false , user: false, error: 'Invalid Search Term' });
     });
-  }).catch(e => {
-    console.log(e);
   });
 });
 

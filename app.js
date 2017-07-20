@@ -7,9 +7,12 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const sassMiddleware = require('node-sass-middleware');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const index = require('./routes/index');
+
+mongoose.connect(process.env.MONGO_URI);
 
 const app = express();
 
