@@ -26,4 +26,7 @@ body {
 .card {
   height: 400px; }
 
+#title {
+  text-decoration: none; }
+
 /*# sourceMappingURL=style.css.map */

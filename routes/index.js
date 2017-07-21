@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const yelp = require('yelp-fusion');
 const passport = require('passport');
+const Location = require('../models/locations');
 
 router.get('/', (req, res) => {
   console.log(req.user);
@@ -55,6 +56,37 @@ router.get('/auth/facebook/callback', (req, res, next) => {
 router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
+});
+
+router.post('/', (req, res) => {
+  const locationID = req.body.locationID;
+  const userID = req.body.userID;
+  const newLocation = new Location({
+    locationID: locationID,
+    usersID: [userID]
+  });
+  console.log(locationID, userID);
+
+  Location.findOne({ locationID: locationID }, (err, doc) => {
+    if (err) throw err;
+    if (!doc) {
+      newLocation.save(err => {
+        if (err) throw err;
+        res.json({ ajax: 'new location saved' });
+      });
+    } else {
+      let docUsersID = doc.usersID;
+      docUsersID.push(userID);
+      const updatedDoc = {
+        usersID: docUsersID
+      };
+
+      Location.update({ locationID: locationID }, updatedDoc, err => {
+        if (err) throw err;
+        res.json({ ajax: 'successful update'});
+      });
+    }
+  });
 });
 
 module.exports = router;
