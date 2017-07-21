@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema ({
-  id: String,
-  token: String,
-  name: String,
+  facebookID: String,
+  facebookToken: String,
+  facebookName: String,
   locations: [String]
 });
 
