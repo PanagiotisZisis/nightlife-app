@@ -6,8 +6,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema ({
   facebookID: String,
   facebookToken: String,
-  facebookName: String,
-  locations: [String]
+  facebookName: String
 });
 
 module.exports = mongoose.model('User', userSchema);
