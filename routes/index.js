@@ -7,14 +7,41 @@ const passport = require('passport');
 
 router.get('/', (req, res) => {
   console.log(req.user);
-  if (req.user) {
-    return res.render('index', { location: false, bars: false , user: req.user, error: false });
+  if (!req.query.location) {
+    if (req.user) {
+      return res.render('index', { location: false, bars: false , user: req.user, error: false });
+    }
+    res.render('index', { location: false, bars: false , user: false, error: false });
+  } else {
+    const location = req.query.location;
+
+    yelp.accessToken(process.env.YELP_CLIENT_ID, process.env.YELP_CLIENT_SECRET).then(response => {
+      const client = yelp.client(response.jsonBody.access_token);
+
+      client.search({
+        term: 'Nightlife',
+        categories: 'bars',
+        location: location
+      }).then(response => {
+        if (req.user) {
+          return res.render('index', { location: location, bars: response.jsonBody.businesses, user: req.user, error: false });
+        }
+        res.cookie('location', location);
+        res.render('index', { location: location, bars: response.jsonBody.businesses, user: false, error: false });
+      }).catch(() => {
+        if (req.user) {
+          return res.render('index', { location: false, bars: false , user: req.user, error: 'Invalid Search Term' });
+        }
+        res.cookie('location', location);
+        res.render('index', { location: false, bars: false , user: false, error: 'Invalid Search Term' });
+      });
+    });
   }
-  res.render('index', { location: false, bars: false , user: false, error: false });
 });
 
-router.post('/', (req, res) => {
+/*router.post('/', (req, res) => {
   const location = req.body.location;
+  req.user.location = location;
   
   yelp.accessToken(process.env.YELP_CLIENT_ID, process.env.YELP_CLIENT_SECRET).then(response => {
     const client = yelp.client(response.jsonBody.access_token);
@@ -35,14 +62,20 @@ router.post('/', (req, res) => {
       res.render('index', { location: false, bars: false , user: false, error: 'Invalid Search Term' });
     });
   });
-});
+});*/
 
 router.get('/auth/facebook', passport.authenticate('facebook'));
 
-router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/',
-  failureRedirect: '/'
-}));
+router.get('/auth/facebook/callback', (req, res, next) => {
+  passport.authenticate('facebook', (err, user) => {
+    if (err) { return next(err); }
+    if (!user) { return res.redirect('/?location=' + req.cookies.location); }
+    req.logIn(user, (err) => {
+      if (err) { return next(err); }
+      return res.redirect('/?location=' + req.cookies.location);
+    });
+  })(req, res, next);
+});
 
 router.get('/logout', (req, res) => {
   req.logout();

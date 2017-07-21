@@ -2,6 +2,11 @@
 
 $(document).ready(function() {
   $('.goingButton').click(function() {
-    alert('YO');
+    var user = $('body').data('user');
+    if (!user) {
+      window.location.href = 'http://localhost:3000/auth/facebook';
+    } else {
+      console.log('ajax request on the way');
+    }
   });
 });
