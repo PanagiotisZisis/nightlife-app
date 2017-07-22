@@ -65,7 +65,6 @@ router.post('/', (req, res) => {
     locationID: locationID,
     usersID: [userID]
   });
-  console.log(locationID, userID);
 
   Location.findOne({ locationID: locationID }, (err, doc) => {
     if (err) throw err;
@@ -76,15 +75,28 @@ router.post('/', (req, res) => {
       });
     } else {
       let docUsersID = doc.usersID;
-      docUsersID.push(userID);
-      const updatedDoc = {
-        usersID: docUsersID
-      };
+      if (docUsersID.indexOf(userID) === -1) {
+        docUsersID.push(userID);
+        const updatedDoc = {
+          usersID: docUsersID
+        };
 
-      Location.update({ locationID: locationID }, updatedDoc, err => {
-        if (err) throw err;
-        res.json({ ajax: 'successful update'});
-      });
+        Location.update({ locationID: locationID }, updatedDoc, err => {
+          if (err) throw err;
+          res.json({ ajax: 'successful ++'});
+        });
+      } else {
+        const index = docUsersID.indexOf(userID);
+        docUsersID.splice(index, 1);
+        const updatedDoc = {
+          usersID: docUsersID
+        };
+
+        Location.update({ locationID: locationID }, updatedDoc, err => {
+          if (err) throw err;
+          res.json({ ajax: 'successful --'});
+        });
+      }
     }
   });
 });

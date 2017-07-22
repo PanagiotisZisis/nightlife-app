@@ -8,6 +8,7 @@ const locationSchema = new Schema ({
   usersID: [String],
   createdAt: {
     type: Date,
+    default: Date.now,
     expires: '12h'
   }
 });
