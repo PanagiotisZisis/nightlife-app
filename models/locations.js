@@ -10,6 +10,10 @@ const locationSchema = new Schema ({
     type: Date,
     default: Date.now,
     expires: '12h'
+  },
+  count: {
+    type: Number,
+    default: 1
   }
 });
 

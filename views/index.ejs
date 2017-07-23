@@ -12,7 +12,7 @@
 
   </head>
 
-  <body data-userid="<%= user.facebookID %>">
+  <body data-userid="<%= user.facebookID %>" data-locationdb="<%= locationdb %>">
 
     <div class="container mt-5">
       <a href="/" id="title"><h1 class="text-white display-4 text-center"><i class="fa fa-glass" aria-hidden="true"></i> nightlifeApp</h1>
@@ -50,7 +50,21 @@
                   <a href="<%= bars[i * 4].url %>" target="_blank">Read More</a>
                   <br />
                   <br />
-                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4].id %>">0 Going</button>
+                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4].id %>">
+                  <% if (locationdb) { %>
+                    <% for (var j = 0; j < locationdb.length; j++) { %>
+                      <% if (bars[i * 4].id === locationdb[j].locationID) { %>
+                        <% var switch0 = true %>
+                        <%= locationdb[j].count + ' Going' %>
+                      <% } %>
+                    <% } %>
+                    <% if (!switch0) { %>
+                      <%= '0 Going' %>
+                    <% } %>
+                  <% } else { %>
+                    <%= '0 Going' %>
+                  <% } %>
+                  </button>
                 </div>
               </div>
               <br />
@@ -64,7 +78,21 @@
                   <a href="<%= bars[i * 4 + 1].url %>" target="_blank">Read More</a>
                   <br />
                   <br />
-                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4 + 1].id %>">0 Going</button>
+                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4 + 1].id %>">
+                  <% if (locationdb) { %>
+                    <% for (var a = 0; a < locationdb.length; a++) { %>
+                      <% if (bars[i * 4 + 1].id === locationdb[a].locationID) { %>
+                        <% var switch1 = true %>
+                        <%= locationdb[a].count + ' Going' %>
+                      <% } %>
+                    <% } %>
+                    <% if (!switch1) { %>
+                      <%= '0 Going' %>
+                    <% } %>
+                  <% } else { %>
+                    <%= '0 Going' %>
+                  <% } %>
+                  </button>
                 </div>
               </div>
               <br />
@@ -78,7 +106,21 @@
                   <a href="<%= bars[i * 4 + 2].url %>" target="_blank">Read More</a>
                   <br />
                   <br />
-                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4 + 2].id %>">0 Going</button>
+                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4 + 2].id %>">
+                  <% if (locationdb) { %>
+                    <% for (var c = 0; c < locationdb.length; c++) { %>
+                      <% if (bars[i * 4 + 2].id === locationdb[c].locationID) { %>
+                        <% var switch2 = true %>
+                        <%= locationdb[c].count + ' Going' %>
+                      <% } %>
+                    <% } %>
+                    <% if (!switch2) { %>
+                      <%= '0 Going' %>
+                    <% } %>
+                  <% } else { %>
+                    <%= '0 Going' %>
+                  <% } %>
+                  </button>
                 </div>
               </div>
               <br />
@@ -92,12 +134,25 @@
                   <a href="<%= bars[i * 4 + 3].url %>" target="_blank">Read More</a>
                   <br />
                   <br />
-                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4 + 3].id %>">0 Going</button>
+                  <button class="btn btn-primary goingButton" data-locationid="<%= bars[i * 4 + 3].id %>">
+                  <% if (locationdb) { %>
+                    <% for (var d = 0; d < locationdb.length; d++) { %>
+                      <% if (bars[i * 4 + 3].id === locationdb[d].locationID) { %>
+                        <% var switch3 = true %>
+                        <%= locationdb[d].count + ' Going' %>
+                      <% } %>
+                    <% } %>
+                    <% if (!switch3) { %>
+                      <%= '0 Going' %>
+                    <% } %>
+                  <% } else { %>
+                    <%= '0 Going' %>
+                  <% } %>
+                  </button>
                 </div>
               </div>
               <br />
             </div>
-
           </div>
         <% } %>
       <% } %>
@@ -114,6 +169,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/javascripts/index.js"></script>
+    <script type="text/javascript" src="/javascripts/load.js"></script>
 
   </body>
 </html>

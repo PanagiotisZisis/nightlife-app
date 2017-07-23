@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
   console.log(req.user);
   if (!req.query.location) {
     if (req.user) {
-      return res.render('index', { location: false, bars: false , user: req.user, error: false });
+      return res.render('index', { location: false, bars: false , user: req.user, error: false, locationdb: false });
     }
-    res.render('index', { location: false, bars: false , user: false, error: false });
+    res.render('index', { location: false, bars: false , user: false, error: false, locationdb: false });
   } else {
     const location = req.query.location;
 
@@ -24,17 +24,28 @@ router.get('/', (req, res) => {
         categories: 'bars',
         location: location
       }).then(response => {
-        if (req.user) {
-          return res.render('index', { location: location, bars: response.jsonBody.businesses, user: req.user, error: false });
-        }
-        res.cookie('location', location);
-        res.render('index', { location: location, bars: response.jsonBody.businesses, user: false, error: false });
+        Location.find((err, docs) => {
+          if (err) throw err;
+          if (!docs || docs.length === 0) {
+            if (req.user) {
+              return res.render('index', { location: location, bars: response.jsonBody.businesses, user: req.user, error: false, locationdb: false });
+            }
+            res.cookie('location', location);
+            res.render('index', { location: location, bars: response.jsonBody.businesses, user: false, error: false, locationdb: false });
+          } else {
+            if (req.user) {
+              return res.render('index', { location: location, bars: response.jsonBody.businesses, user: req.user, error: false, locationdb: docs });
+            }
+            res.cookie('location', location);
+            res.render('index', { location: location, bars: response.jsonBody.businesses, user: false, error: false, locationdb: docs });
+          }
+        });
       }).catch(() => {
         if (req.user) {
-          return res.render('index', { location: false, bars: false , user: req.user, error: 'There was an error - please try again.' });
+          return res.render('index', { location: false, bars: false , user: req.user, error: 'There was an error - please try again.', locationdb: false });
         }
         res.cookie('location', location);
-        res.render('index', { location: false, bars: false , user: false, error: 'There was an error - please try again.' });
+        res.render('index', { location: false, bars: false , user: false, error: 'There was an error - please try again.', locationdb: false });
       });
     });
   }
@@ -66,6 +77,7 @@ router.post('/', (req, res) => {
     usersID: [userID]
   });
 
+  // creating new location
   Location.findOne({ locationID: locationID }, (err, doc) => {
     if (err) throw err;
     if (!doc) {
@@ -74,11 +86,14 @@ router.post('/', (req, res) => {
         res.json({ ajax: 'new location saved' });
       });
     } else {
+      // adding a user to an existing location
       let docUsersID = doc.usersID;
       if (docUsersID.indexOf(userID) === -1) {
         docUsersID.push(userID);
+        const count = docUsersID.length;
         const updatedDoc = {
-          usersID: docUsersID
+          usersID: docUsersID,
+          count: count
         };
 
         Location.update({ locationID: locationID }, updatedDoc, err => {
@@ -86,10 +101,13 @@ router.post('/', (req, res) => {
           res.json({ ajax: 'successful ++'});
         });
       } else {
+        // removing a user from an existing location
         const index = docUsersID.indexOf(userID);
         docUsersID.splice(index, 1);
+        const count = docUsersID.length;
         const updatedDoc = {
-          usersID: docUsersID
+          usersID: docUsersID,
+          count: count
         };
 
         Location.update({ locationID: locationID }, updatedDoc, err => {

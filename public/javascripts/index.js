@@ -19,6 +19,7 @@ $(document).ready(function() {
         url: 'http://localhost:3000/',
         success: function(data) {
           console.log(data);
+          location.reload(true);
         }
       });
     }
