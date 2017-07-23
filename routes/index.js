@@ -7,7 +7,6 @@ const passport = require('passport');
 const Location = require('../models/locations');
 
 router.get('/', (req, res) => {
-  console.log(req.user);
   if (!req.query.location) {
     if (req.user) {
       return res.render('index', { location: false, bars: false , user: req.user, error: false, locationdb: false });
